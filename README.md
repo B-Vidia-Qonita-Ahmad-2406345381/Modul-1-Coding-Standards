@@ -1,10 +1,5 @@
 # Modul-1-Coding-Standards
 **Reflection 1**
-
-
- Saat saya menulis refleksi ini saya kesal karena tadi perubahannya ga ke-commit hehe. 
- 
- NO NO NO
  
  Saat saya menulis refleksi 1 ini saya belum implementasi dua fungsi dari exercise 1: edit dan delete. Saya juga belum mengerjakan tutorial testing.
  
