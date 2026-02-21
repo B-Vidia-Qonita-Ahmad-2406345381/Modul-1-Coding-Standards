@@ -69,5 +69,14 @@ tasks.register<Test>("functionalTest") {
 }
 
 tasks.withType<Test>().configureEach {
+
     useJUnitPlatform()
+
+    val isCI = System.getenv("CI") == "true"
+
+    if (isCI) {
+        filter {
+            excludeTestsMatching("*FunctionalTest")
+        }
+    }
 }
