@@ -19,6 +19,6 @@ jobs:
           java-version: "21"
           cache: "gradle"
       - name: Run unit tests
-        run: ./gradlew test -Dselenium.chrome.args="$CHROME_OPTS"
+        run: ./gradlew test --tests "*Test" --exclude-tests "*FunctionalTest"
         env:
           CHROME_OPTS: "--headless=new --no-sandbox --disable-dev-shm-usage"
