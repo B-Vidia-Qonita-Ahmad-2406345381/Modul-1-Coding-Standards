@@ -8,11 +8,11 @@ on:
 jobs:
   test:
     name: Run tests
-    runs-on: ubuntu--22.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Check out the Git repository
         uses: actions/checkout@v4
-      - name: St up Java toolchain
+      - name: Set up Java toolchain
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
