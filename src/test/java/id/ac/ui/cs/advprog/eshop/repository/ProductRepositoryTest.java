@@ -64,4 +64,59 @@ class ProductRepositoryTest {
         assertEquals(product2.getProductId(), savedProduct.getProductId());
         assertFalse(productIterator.hasNext());
     }
+    @Test
+    void testUpdateProduct() {
+        Product product = new Product();
+        product.setProductId("1");
+        product.setProductName("Pensil");
+        product.setProductQuantity(5);
+        productRepository.create(product);
+
+        Product updatedProduct = new Product();
+        updatedProduct.setProductId("1");
+        updatedProduct.setProductName("Pulpen");
+        updatedProduct.setProductQuantity(10);
+
+        Product result = productRepository.update(updatedProduct);
+
+        assertNotNull(result);
+        assertEquals("Pulpen", result.getProductName());
+        assertEquals(10, result.getProductQuantity());
+
+        Iterator<Product> productIterator = productRepository.findAll();
+        Product savedProduct = productIterator.next();
+
+        assertEquals("Pulpen", savedProduct.getProductName());
+        assertEquals(10, savedProduct.getProductQuantity());
+    }
+    @Test
+    void testDeleteProduct() {
+        Product product = new Product();
+        product.setProductId("2");
+        product.setProductName("Buku");
+        product.setProductQuantity(20);
+        productRepository.create(product);
+
+        boolean isDeleted = productRepository.delete("2");
+
+        assertTrue(isDeleted);
+
+        Iterator<Product> productIterator = productRepository.findAll();
+        assertFalse(productIterator.hasNext());
+    }
+    @Test
+    void testUpdateProductNotFound() {
+        Product product = new Product();
+        product.setProductId("999");
+        product.setProductName("Ghost");
+        product.setProductQuantity(0);
+
+        Product result = productRepository.update(product);
+        assertNull(result);
+    }
+    @Test
+    void testDeleteProductNotFound() {
+        boolean isDeleted = productRepository.delete("999");
+        assertFalse(isDeleted);
+    }
 }
