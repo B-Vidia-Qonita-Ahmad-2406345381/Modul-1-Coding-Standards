@@ -36,18 +36,17 @@ public class ProductController {
     }
     @GetMapping("/edit")
     public String editProductPage(Model model, @RequestParam String productId) {
-        try {
-            Product productFetched = service.findById(productId);
-            model.addAttribute("productFetched", productFetched);
-
-            Product product = new Product();
-            product.setProductName(productFetched.getProductName());
-            product.setProductQuantity(productFetched.getProductQuantity());
-            model.addAttribute("product", product);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        Product product = service.findById(productId);
+        if (product == null) {
             return "redirect:list";
         }
+        model.addAttribute("product", product);
         return "EditProduct";
     }
+    @PostMapping("/edit")
+    public String editProductPost(@ModelAttribute Product product) {
+        service.edit(product);
+        return "redirect:list";
+    }
+
 }
