@@ -27,4 +27,8 @@ public class ProductServiceImpl implements ProductService {
         productIterator.forEachRemaining(allProduct::add);
         return allProduct;
     }
+    @Override
+    public boolean delete(String productId) {
+        return productRepository.delete(productId);
+    }
 }
