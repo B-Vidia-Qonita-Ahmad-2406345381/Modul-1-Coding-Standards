@@ -23,15 +23,24 @@
         <tr th:each="product: ${products}">
             <td th:text="${product.productName}"></td>
             <td th:text="${product.productQuantity}"></td>
-            <td>
-                <form th:action="@{/product/delete}" method="post" th:if="${product.productId != null}">
-                    <input type="hidden" name="productId" th:value="${product.productId}" />
-                    <button type="submit" class="btn btn-danger btn-sm">
+            <td class="d-flex align-items-center">
+
+                <a th:href="@{/product/edit(productId=${product.productId})}"
+                   class="btn btn-primary btn-sm mr-2">
+                    Edit
+                </a>
+
+                <form th:action="@{/product/delete}" method="post"
+                      th:if="${product.productId != null}"
+                      style="margin:0;">
+                    <input type="hidden" name="productId"
+                           th:value="${product.productId}" />
+                    <button class="btn btn-danger btn-sm">
                         Delete
                     </button>
                 </form>
+
             </td>
-            <td><a th:href="@{/product/edit(productId=${product.getProductId()})}" class="btn btn-primary btn-sm mb-3">Edit Product</a></td>
         </tr>
         </tbody>
     </table>
