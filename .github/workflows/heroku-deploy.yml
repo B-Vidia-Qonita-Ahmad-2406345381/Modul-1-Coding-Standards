@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - module-2-exercise
+      - main
 
 jobs:
   deploy:
