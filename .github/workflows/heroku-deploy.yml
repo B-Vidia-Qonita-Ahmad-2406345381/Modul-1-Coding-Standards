@@ -23,6 +23,9 @@ jobs:
       - name: Push to Heroku
         run: docker push registry.heroku.com/$HEROKU_APP_NAME/web
 
+      - name: Set Heroku stack to container
+        run: heroku stack:set container --app $HEROKU_APP_NAME
+
       - name: Release
         run: |
           curl https://cli-assets.heroku.com/install.sh | sh
