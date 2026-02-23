@@ -23,7 +23,7 @@ jobs:
           password: ${{ secrets.HEROKU_API_KEY }}
           registry: registry.heroku.com
 
-      - name: Build and Push
+      - name: Build and Push Docker image
         run: |
           docker build --platform linux/amd64 -t registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web .
           docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
@@ -31,7 +31,11 @@ jobs:
       - name: Install Heroku CLI
         run: curl https://cli-assets.heroku.com/install.sh | sh
 
-      - name: Release App
+      - name: Configure Heroku and Release
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: heroku container:release web --app ${{ secrets.HEROKU_APP_NAME }}
+        run: |
+          # Memastikan Heroku mode container aktif
+          heroku stack:set container --app ${{ secrets.HEROKU_APP_NAME }}
+          # Melakukan rilis image
+          heroku container:release web --app ${{ secrets.HEROKU_APP_NAME }}
