@@ -3,7 +3,6 @@ name: Deploy to Heroku
 on:
   push:
     branches:
-      - module-2-exercise
       - main
 
 jobs:
@@ -13,7 +12,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Set up Docker
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
       - name: Login to Heroku Container Registry
@@ -23,11 +22,15 @@ jobs:
           password: ${{ secrets.HEROKU_API_KEY }}
           registry: registry.heroku.com
 
-      - name: Build Docker image
-        run: docker build -t registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web .
+      - name: Build and Push
+        run: |
+          docker build --platform linux/amd64 -t registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web .
+          docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
 
-      - name: Push Docker image
-        run: docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
+      - name: Install Heroku CLI
+        run: curl https://cli-assets.heroku.com/install.sh | sh
 
-      - name: Release Docker image
+      - name: Release App
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:release web --app ${{ secrets.HEROKU_APP_NAME }}
