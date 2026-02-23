@@ -7,21 +7,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-import java.time.Duration;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import java.time.Duration;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ExtendWith(SeleniumJupiter.class)
-class CreateProductFunctionalTest {
+class DeleteProductFunctionalTest {
 
     @Autowired
     private ProductService service;
@@ -41,16 +40,9 @@ class CreateProductFunctionalTest {
     }
 
     @Test
-    void createProduct_isDisplayedInProductList(ChromeDriver driver) {
+    void deleteProduct_isDisplayedInProductList(ChromeDriver driver) {
 
-        driver.get(baseUrl + "/product/list");
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Create Product")));
-
-        driver.findElement(By.linkText("Create Product")).click();
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("productName")));
+        driver.get(baseUrl + "/product/create");
 
         driver.findElement(By.id("nameInput"))
                 .sendKeys("Indomie");
@@ -61,10 +53,21 @@ class CreateProductFunctionalTest {
         driver.findElement(By.tagName("button"))
                 .click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Create Product")));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("form button.btn-danger")));
 
-        String pageSource = driver.getPageSource();
+        driver.findElement(By.cssSelector("form button.btn-danger")).click();
 
-        assertTrue(pageSource.contains("Indomie"));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.linkText("Create Product")
+        ));
+
+        String afterDelete = driver.getPageSource();
+
+        System.out.println(driver.getCurrentUrl());
+        System.out.println(driver.getPageSource());
+
+        assertFalse(afterDelete.contains("Indomie"));
     }
+
 }

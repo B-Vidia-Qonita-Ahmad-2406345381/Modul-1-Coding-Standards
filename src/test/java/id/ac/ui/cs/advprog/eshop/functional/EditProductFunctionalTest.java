@@ -7,21 +7,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-import java.time.Duration;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import java.time.Duration;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ExtendWith(SeleniumJupiter.class)
-class CreateProductFunctionalTest {
+class EditProductFunctionalTest {
 
     @Autowired
     private ProductService service;
@@ -41,16 +40,11 @@ class CreateProductFunctionalTest {
     }
 
     @Test
-    void createProduct_isDisplayedInProductList(ChromeDriver driver) {
+    void editProduct_isDisplayedInProductList(ChromeDriver driver) {
 
         driver.get(baseUrl + "/product/list");
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Create Product")));
-
         driver.findElement(By.linkText("Create Product")).click();
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("productName")));
 
         driver.findElement(By.id("nameInput"))
                 .sendKeys("Indomie");
@@ -61,10 +55,37 @@ class CreateProductFunctionalTest {
         driver.findElement(By.tagName("button"))
                 .click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Create Product")));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Edit")));
+
+        driver.findElement(By.linkText("Edit")).click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("productName")));
+
+        driver.findElement(By.name("productName")).clear();
+        driver.findElement(By.name("productName")).sendKeys("Mie Sedap");
+
+        driver.findElement(By.name("productQuantity")).clear();
+        driver.findElement(By.name("productQuantity")).sendKeys("55");
+
+        driver.findElement(By.tagName("button"))
+                .click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Edit")));
 
         String pageSource = driver.getPageSource();
 
-        assertTrue(pageSource.contains("Indomie"));
+        assertTrue(pageSource.contains("Mie Sedap"));
+        assertTrue(pageSource.contains("55"));
+    }
+    @Test
+    void editProduct_productNotFound(ChromeDriver driver) {
+        service.clear();
+
+        driver.get(baseUrl + "/product/edit?productId=INVALID_ID");
+
+        String pageSource = driver.getPageSource();
+
+        assertTrue(pageSource.contains("Product' List"));
     }
 }

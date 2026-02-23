@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductRepository productRepository = new ProductRepository();
     @Override
     public Product create(Product product) {
         productRepository.create(product);
@@ -47,5 +47,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public boolean delete(String productId) {
         return productRepository.delete(productId);
+    }
+    @Override
+    public void clear() {
+        productRepository.clear();
     }
 }
