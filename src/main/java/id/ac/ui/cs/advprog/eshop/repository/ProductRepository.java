@@ -43,4 +43,7 @@ public class ProductRepository {
         }
         return false;
     }
+    public void clear() {
+        productData.clear();
+    }
 }
