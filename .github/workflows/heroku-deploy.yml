@@ -18,17 +18,16 @@ jobs:
         run: curl https://cli-assets.heroku.com/install.sh | sh
 
       - name: Login to Heroku Container Registry
-        run: |
-          echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
+        run: echo ${{ secrets.HEROKU_API_KEY }} | docker login --username=_ --password-stdin registry.heroku.com
 
       - name: Build Docker Image
-        run: docker build -t registry.heroku.com/$HEROKU_APP_NAME/web .
+        run: docker build -t registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web .
 
-      - name: Push to Heroku
-        run: docker push registry.heroku.com/$HEROKU_APP_NAME/web
+      - name: Push Docker Image
+        run: docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
 
-      - name: Release
-        run: heroku container:release web --app $HEROKU_APP_NAME
+      - name: Release Docker Image
+        run: heroku container:release web --app ${{ secrets.HEROKU_APP_NAME }}
 
     env:
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
