@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.service;
 
+import id.ac.ui.cs.advprog.eshop.model.Car;
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,40 +14,38 @@ import java.util.ArrayList;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    private ProductRepository productRepository = new ProductRepository();
+    private ProductRepository productRepository;
     @Override
     public Product create(Product product) {
+        // TODO Auto-generated method stub;
         productRepository.create(product);
         return product;
     }
 
     @Override
-    public Product findById(String productId) {
-        Iterator<Product> productIterator = productRepository.findAll();
-        while (productIterator.hasNext()) {
-            Product product = productIterator.next();
-            if (product.getProductId().equals(productId)) {
-                return product;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public Product edit(Product product) {
-        return productRepository.update(product);
-    }
-
-    @Override
     public List<Product> findAll() {
-        Iterator<Product> productIterator = productRepository.findAll();
+        Iterator<Product> carIterator = productRepository.findAll();
         List<Product> allProduct = new ArrayList<>();
-        productIterator.forEachRemaining(allProduct::add);
+        carIterator.forEachRemaining(allProduct::add);
         return allProduct;
     }
+
     @Override
-    public boolean delete(String productId) {
-        return productRepository.delete(productId);
+    public Product findById(String productId) {
+        Product product = productRepository.findById(productId);
+        return product;
+    }
+
+    @Override
+    public void update(String productId, Product product) {
+        // TODO Auto-generated method stub;
+        productRepository.update(productId, product);
+    }
+
+    @Override
+    public void deleteProductById(String productId) {
+        // TODO Auto-generated method stub;
+        productRepository.delete(productId);
     }
     @Override
     public void clear() {
