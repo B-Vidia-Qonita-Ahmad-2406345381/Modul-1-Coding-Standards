@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.eshop.repository;
 
+import id.ac.ui.cs.advprog.eshop.model.Car;
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import org.springframework.stereotype.Repository;
 
@@ -19,10 +20,21 @@ public class ProductRepository {
         productData.add(product);
         return product;
     }
-    public Product update(Product product) {
+    public Product update(String id, Product updatedProduct) {
         for (int i = 0; i < productData.size(); i++) {
-            if (productData.get(i).getProductId().equals(product.getProductId())) {
-                productData.set(i, product);
+            Product product = productData.get(i);
+            if (product.getProductId().equals(id)) {
+                // Update the existing product with the new information
+                product.setProductName(updatedProduct.getProductName());
+                product.setProductQuantity(updatedProduct.getProductQuantity());
+                return product;
+            }
+        }
+        return null; // Handle the case where the product is not found
+    }
+    public Product findById(String id) {
+        for (Product product : productData) {
+            if (product.getProductId().equals(id)) {
                 return product;
             }
         }
@@ -32,17 +44,9 @@ public class ProductRepository {
     public Iterator<Product> findAll() {
         return productData.iterator();
     }
-    public boolean delete(String productId) {
-        Iterator<Product> iterator = productData.iterator();
-        while (iterator.hasNext()) {
-            Product product = iterator.next();
-            if (product.getProductId().equals(productId)) {
-                iterator.remove();
-                return true;
-            }
-        }
-        return false;
-    }
+
+    public void delete(String id) { productData.removeIf(product -> product.getProductId().equals(id));}
+
     public void clear() {
         productData.clear();
     }

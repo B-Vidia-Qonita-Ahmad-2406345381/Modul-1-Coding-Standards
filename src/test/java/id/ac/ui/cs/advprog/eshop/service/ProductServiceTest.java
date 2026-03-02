@@ -79,11 +79,10 @@ class ProductServiceTest {
         updatedProduct.setProductName("Pulpen");
         updatedProduct.setProductQuantity(10);
 
-        Product result = productService.edit(updatedProduct);
+        productService.update("1", updatedProduct);
 
-        assertNotNull(result);
-        assertEquals("Pulpen", result.getProductName());
-        assertEquals(10, result.getProductQuantity());
+        assertEquals("Pulpen", product.getProductName());
+        assertEquals(10, product.getProductQuantity());
     }
     @Test
     void testDeleteFirstProduct() {
@@ -93,18 +92,12 @@ class ProductServiceTest {
         product.setProductQuantity(20);
         productService.create(product);
 
-        boolean isDeleted = productService.delete("1");
-
-        assertTrue(isDeleted);
+        productService.deleteProductById("1");
 
         List<Product> productList = productService.findAll();
         assertTrue(productList.isEmpty());
     }
-    @Test
-    void testDeleteProductNotFound() {
-        boolean isDeleted = productService.delete("999");
-        assertFalse(isDeleted);
-    }
+
     @Test
     void testClearProductData() {
         Product product = new Product();
