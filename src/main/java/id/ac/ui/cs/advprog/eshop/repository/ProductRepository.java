@@ -1,6 +1,5 @@
 package id.ac.ui.cs.advprog.eshop.repository;
 
-import id.ac.ui.cs.advprog.eshop.model.Car;
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +14,7 @@ public class ProductRepository {
 
     public Product create(Product product) {
         if (product.getProductId() == null) {
-            product.setProductId(UUID.randomUUID().toString());
+            product.setProductId(generateId());
         }
         productData.add(product);
         return product;
@@ -49,5 +48,8 @@ public class ProductRepository {
 
     public void clear() {
         productData.clear();
+    }
+    public String generateId() {
+        return UUID.randomUUID().toString();
     }
 }
