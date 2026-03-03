@@ -75,15 +75,16 @@ DIP: Sistem akan lebih fleksibel dan tidak kaku (loose coupling). Contohnya, Con
 3: Disadvantages jika tidak menerapan SOLID principles di projek ini:
 
 SRP:
-Kode jadi kaku dan fragile. Seandainya ada satu logika yang salah, kita harus mengubah fungsi ya
+Kode jadi kaku dan fragile. Seandainya ada satu logika yang salah, kita harus mengubah keseluruhan fungsi yang mengganggu fungsionalitas logika lain. Selain itu, akan sulit untuk melakukan testing, apalagi kalau ada yang error dan harus mencari penyebab kesalahan.
 
-OCP: 
+OCP: Jika kode melanggar OCP, maka bisa mengganggu fitur awal yang sudah bekerja dengan baik. Jika seandainya ingin ditambahkan fitur baru dan tercampur dengan fungsi internal, kode lama bisa rusak dan susah untuk diperbaiki.
 
-LSP:
+LSP: 
+Child class tidak bisa menggantikan parent class. Seandainya kita memanggil Electric Car dan ingin memanggil fungsi move() (Misal ada di Car), jika fungsi di-override oleh Electric Car, akan mengubah fungsi asli parent class.
 
-ISP: 
+ISP: Klien bisa wajib mengimplementasi method2 yang tidak diperlukan karena method di interface harus diimplementasi semua. Hal ini menyebabkan code smells di mana ada method2 tidak terpakai hanya diam di class. 
 
-DIP:
+DIP: Tight Coupling (ketergantungan yang kuat), karena jika class bergantung pada suatu concrete class, implementasinya jadi kurang fleksibel jika ingin ditambah fitur baru. Misal, jika Car memanggil class CarServiceImpl bukan CarService, implementasinya bergantung pada CarServiceImpl yang merupakan concrete class, sehingga misal Car ingin menambah implementasi sendiri jadi terhalang karena harus ikut CarServiceImpl.
    
 
 
