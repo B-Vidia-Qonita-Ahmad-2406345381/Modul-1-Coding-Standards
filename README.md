@@ -42,7 +42,7 @@ The workflow facilitates rapid feedback: build or push errors are immediately vi
 1. SOLID principles yang saya apply ke project ini:
 
 SRP:
-Pada kode ini, setiap fungsi sudah melakukan hanya sesuai tugas masing-masing, tidak lebih dari satu. Fungsi-fungsi sudah dipisah berdasarkan tugas ke Repository, Service, dan ServiceImpl. Maka, SRP sudah terpenuhi. 
+Pada kode ini, logika pembuatan objek Product dan Car masih sekaligus dengan meng-generate id. Sebaiknya dipisah agar tugas tidak tercampur antara menyimpan data dan generate id. Maka, saya memindahkan logika generate id ke fungsi lain dan dipanggil di fungsi create.
 
 OCP: 
 Pada kode ini, awalnya Car Controller extends Product Controller. Hal ini melanggar OCP karena seandainya Product Controller mengubah kodenya, Car Controller ikut berubah yang mana seharusnya tidak bisa dimodifikasi. Maka, saya menghapus extends Product Controller sehingga kedua Controller menjadi saling independen dan tetap bisa menjaga kode masing-masing.
@@ -70,6 +70,20 @@ Kode bisa saling menggantikan tanpa ada error. Contohnya, jika kita buat Electri
 ISP: Klien tidak terbebani dengan fungsi-fungsi yang tidak diperlukan. Contohnya, Car hanya mengimplementasi CarService yang fungsinya dipakai semua. Seandainya ada interface yang lebih umum seperti VehicleService (belum ISP) mungkin saja ada method yang tidak diperlukan Car jika mengacu ke interface itu, maka lebih baik fungsi-fungsi yang banyak di satu VehicleService dipecah ke interface-interface yang lebih khusus seperti CarService, BycicleService, dsb. 
 
 DIP: Sistem akan lebih fleksibel dan tidak kaku (loose coupling). Contohnya, Controller memanggil ke abstraksi Service langsung, bukan ke ServiceImpl, sehingga Controller tidak tergantung ke suatu concrete class. Akan lebih baik kedua concrete class (seperti Controller dan ServiceImpl) mengimplementasikan atau memanggil ke abstraksi Service langsung sehingga tidak saling bergantung dan bisa punya implementasi masing-masing.  
+
+
+3: Disadvantages jika tidak menerapan SOLID principles di projek ini:
+
+SRP:
+Kode jadi kaku dan fragile. Seandainya ada satu logika yang salah, kita harus mengubah fungsi ya
+
+OCP: 
+
+LSP:
+
+ISP: 
+
+DIP:
    
 
 
