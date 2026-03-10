@@ -10,7 +10,7 @@ public interface PaymentService {
 
     Payment addPayment(Order order, String method, Map<String,String> paymentData);
 
-    Payment setStatus(Payment payment, String status);
+    Payment setStatus(Payment payment, Order order, String status);
 
     Payment getPayment(String paymentId);
 

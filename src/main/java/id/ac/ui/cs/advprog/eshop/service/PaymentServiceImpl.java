@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -21,7 +22,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public Payment addPayment(Order order, String method, Map<String, String> paymentData) {
 
-        Payment payment = new Payment(order.getId(), method, paymentData);
+        Payment payment = new Payment(UUID.randomUUID().toString(), method, paymentData);
 
         if (method.equalsIgnoreCase("Voucher")) {
 
@@ -36,9 +37,8 @@ public class PaymentServiceImpl implements PaymentService {
             } else {
                 payment.setStatus(PaymentStatus.REJECTED.getValue());
             }
-        }
 
-        else if (method.equalsIgnoreCase("COD")) {
+        } else if (method.equalsIgnoreCase("COD")) {
 
             String address = paymentData.get("address");
             String fee = paymentData.get("deliveryFee");
@@ -48,9 +48,8 @@ public class PaymentServiceImpl implements PaymentService {
             } else {
                 payment.setStatus(PaymentStatus.WAITING.getValue());
             }
-        }
 
-        else if (method.equalsIgnoreCase("BankTransfer")) {
+        } else if (method.equalsIgnoreCase("BankTransfer")) {
 
             String bank = paymentData.get("bankName");
             String ref = paymentData.get("referenceCode");
@@ -66,16 +65,13 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public Payment setStatus(Payment payment, String status) {
+    public Payment setStatus(Payment payment, Order order, String status) {
 
         payment.setStatus(status);
-
-        Order order = payment.getOrder();
 
         if (status.equals(PaymentStatus.SUCCESS.getValue())) {
             order.setStatus(OrderStatus.SUCCESS.getValue());
         }
-
         else if (status.equals(PaymentStatus.REJECTED.getValue())) {
             order.setStatus(OrderStatus.FAILED.getValue());
         }
