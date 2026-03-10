@@ -87,4 +87,38 @@ ISP: Klien bisa wajib mengimplementasi method2 yang tidak diperlukan karena meth
 DIP: Tight Coupling (ketergantungan yang kuat), karena jika class bergantung pada suatu concrete class, implementasinya jadi kurang fleksibel jika ingin ditambah fitur baru. Misal, jika Car memanggil class CarServiceImpl bukan CarService, implementasinya bergantung pada CarServiceImpl yang merupakan concrete class, sehingga misal Car ingin menambah implementasi sendiri jadi terhalang karena harus ikut CarServiceImpl.
    
 
+# Modul-4-TDD-and-Refactoring
+**Reflection 1**
+
+1. Test Driven Development (TDD)
+
+Dalam pengerjaan Order, OrderService, OrderRepository dan OrderServiceImpl, pendekatan TDD digunakan dengan cara menjalankan test yang sudah disediakan terlebih dahulu sebelum implementasi method selesai. Test tersebut mendefinisikan perilaku yang diharapkan dari method seperti `save`, `create`, `update`, `findById`, dan `findAllByAuthor`. Dengan adanya test tersebut, implementasi dapat dilakukan secara bertahap sampai semua test berhasil dijalankan.
+
+Pendekatan ini cukup membantu karena developer dapat langsung mengetahui apakah implementasi sudah sesuai dengan kebutuhan atau belum. Ketika test gagal, error message yang muncul memberikan petunjuk mengenai bagian kode yang perlu diperbaiki. Hal ini membuat proses debugging menjadi lebih terarah dan meningkatkan kepercayaan terhadap kode yang dihasilkan.
+
+Perbaikan untuk ke depan: Selama proses implementasi terlihat bahwa beberapa test saling bergantung pada method lain. Misalnya, test untuk `save` juga menggunakan `findById` untuk memverifikasi hasilnya. Hal ini menyebabkan beberapa test gagal meskipun method yang sedang diuji sebenarnya sudah benar, karena method lain belum diimplementasikan. Untuk ke depannya, test dapat dibuat lebih terisolasi sehingga setiap test hanya memverifikasi satu perilaku tertentu tanpa terlalu bergantung pada method lain.
+
+Mengacu pada Percival (2017), tujuan utama dari pengujian adalah untuk mencapai correctness, maintainability, dan productive workflow. Dengan adanya TDD, correctness dapat lebih mudah dicapai karena setiap perubahan kode langsung divalidasi oleh test. Namun, maintainability dan workflow juga perlu diperhatikan dengan cara menulis test yang lebih terstruktur, mengurangi duplikasi setup data, serta memastikan test tetap mudah dipahami dan dipelihara.
+
+---
+
+2. FIRST Principles
+
+Berikut refleksi apakah unit test tutorial sudah mengikuti prinsip FIRST, yaitu Fast, Independent, Repeatable, Self-validating, dan Timely.
+
+Fast: Test berjalan dengan cepat karena hanya menggunakan struktur data Arraylist tanpa melibatkan database, jaringan, atau komponen eksternal lainnya. Hal ini membuat test dapat dijalankan berkali-kali selama proses development tanpa memperlambat workflow.
+
+Independent: Setiap test dijalankan secara independen karena menggunakan `@BeforeEach` untuk membuat ulang objek repository dan data yang dibutuhkan sebelum setiap test dijalankan. Dengan demikian, hasil dari satu test tidak mempengaruhi test lainnya.
+
+Repeatable: Test dapat dijalankan berulang kali dengan hasil yang konsisten karena tidak bergantung pada kondisi eksternal seperti environment tertentu atau state dari sistem lain. Semua data yang digunakan dibuat secara eksplisit di dalam test.
+
+Self-validating: Test menggunakan assertion seperti `assertEquals`, `assertNull`, dan `assertTrue` untuk memverifikasi hasil yang diharapkan. Dengan adanya assertion tersebut, hasil test langsung menunjukkan apakah test berhasil atau gagal tanpa memerlukan pengecekan manual.
+
+Timely: Test sudah ditulis dan digunakan sebelum implementasi method selesai, sehingga implementasi kode mengikuti kebutuhan yang didefinisikan oleh test. Hal ini sesuai dengan praktik TDD di mana test dibuat terlebih dahulu untuk mendefinisikan perilaku sistem.
+
+Secara keseluruhan, test yang dibuat sudah cukup mengikuti prinsip FIRST. Namun, masih ada beberapa hal yang dapat diperbaiki untuk meningkatkan kualitas test, seperti: 
+- membuat test yang lebih terisolasi,
+- mengurangi duplikasi kode pada setup data,
+-  memastikan setiap test hanya memverifikasi satu perilaku spesifik agar maintainability tetap terjaga.
+
 
