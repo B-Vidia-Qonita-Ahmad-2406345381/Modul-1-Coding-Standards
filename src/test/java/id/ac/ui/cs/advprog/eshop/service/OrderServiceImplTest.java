@@ -71,8 +71,8 @@ class OrderServiceImplTest {
         Order order = orders.get(1);
         doReturn(order).when(orderRepository).findById(order.getId());
 
-        assertThrows((IllegalArgumentException.class,
-                () -> orderService.updateStatus(order.getId(), "MEOW")));
+        assertThrows(IllegalArgumentException.class,
+                () -> orderService.updateStatus(order.getId(), "MEOW"));
 
         verify(orderRepository, times(0)).save(any(Order.class));
     }
@@ -95,7 +95,7 @@ class OrderServiceImplTest {
     }
     @Test
     void testFindByIdIfIdNotFound() {
-        doReturn(order).when(orderRepository).findById("zczc");
+        doReturn(null).when(orderRepository).findById("zczc");
         assertNull(orderService.findById("zczc"));
     }
     @Test
