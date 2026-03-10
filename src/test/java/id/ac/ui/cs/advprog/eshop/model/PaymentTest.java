@@ -62,11 +62,9 @@ class PaymentTest {
         Payment payment = new Payment(
                 "payment-1",
                 "VoucherCode",
-                paymentData,
-                PaymentStatus.SUCCESS.getValue()
+                paymentData
         );
-
-
+        payment.setStatus(PaymentStatus.SUCCESS.getValue());
         assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
     }
 
@@ -79,5 +77,17 @@ class PaymentTest {
         );
 
         assertThrows(IllegalArgumentException.class, () -> payment.setStatus("MEOW"));
+    }
+    @Test
+    void testSetStatusRejected() {
+        Payment payment = new Payment(
+                "payment-1",
+                "VoucherCode",
+                paymentData
+        );
+
+        payment.setStatus(PaymentStatus.REJECTED.getValue());
+
+        assertEquals(PaymentStatus.REJECTED.getValue(), payment.getStatus());
     }
 }
