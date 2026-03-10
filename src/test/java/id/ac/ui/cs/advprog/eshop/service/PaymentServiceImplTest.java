@@ -4,6 +4,7 @@ import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
+import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.repository.PaymentRepository;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -32,11 +33,21 @@ class PaymentServiceImplTest {
 
     @BeforeEach
     void setUp() {
+
+        List<Product> products = new ArrayList<>();
+
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(2);
+
+        products.add(product);
+
         order = new Order(
                 "order1",
-                new ArrayList<>(),
+                products,
                 1708570000L,
-                "Safira"
+                "Safira Sudrajat"
         );
     }
 
