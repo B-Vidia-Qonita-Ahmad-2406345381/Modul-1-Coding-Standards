@@ -16,7 +16,7 @@ public class Payment {
     String method;
     String status;
     Map<String, String> paymentData;
-
+    private String orderId;
     public Payment(String id, String method, Map<String,String> paymentData) {
         this.id = id;
         this.method = method;
@@ -34,5 +34,6 @@ public class Payment {
             throw new IllegalArgumentException();
         }
     }
+
 }
 
